@@ -1,11 +1,11 @@
 type Configuration = {
   username: string | undefined;
   password: string | undefined;
-  channel: string | undefined;
+  channels: string[];
 };
 
 /**
- * Valida que as variáveis de ambiente estão definidas.
+ * Valida que as variáveis de ambiente estão
  */
 function validateConfiguration() {
   if (!process.env.USERNAME) throw Error('No username provided for client.');
@@ -21,6 +21,6 @@ export default function configuration(): Configuration {
   return {
     username: process.env.USERNAME,
     password: process.env.PASSWORD,
-    channel: process.env.CHANNEL,
+    channels: process.env.CHANNEL ? [process.env.CHANNEL] : [],
   };
 }

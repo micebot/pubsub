@@ -2,6 +2,9 @@
   "private": true,
   "name": "pubsub",
   "version": "0.1.0",
+  "engines": {
+    "node": "13.x"
+  },
   "devDependencies": {
     "@types/faker": "^4.1.12",
     "@types/jest": "^26.0.3",
@@ -25,6 +28,9 @@
     "twitter-text": "^3.1.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc -p .",
+    "run:app": "node build/index.js",
+    "start": "yarn build && yarn run:app"
   }
 }

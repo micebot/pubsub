@@ -3,3 +3,6 @@ node_modules
 
 # Editors/IDEs
 .vscode
+
+# Dist
+build

@@ -3,9 +3,10 @@
   "name": "pubsub",
   "version": "0.1.0",
   "engines": {
-    "node": "13.x"
+    "node": "14.x"
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
     "@types/faker": "^4.1.12",
     "@types/jest": "^26.0.3",
     "@types/tmi.js": "^1.4.0",
@@ -24,6 +25,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "tmi.js": "^1.5.0",
     "twitter-text": "^3.1.0"
   },

@@ -3,7 +3,7 @@
   "name": "pubsub",
   "version": "0.1.0",
   "engines": {
-    "node": "14.x"
+    "node": "13.x"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",

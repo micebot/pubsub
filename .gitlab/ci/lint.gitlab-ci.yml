@@ -9,10 +9,6 @@ lint:
   dependencies:
     - prepare
 
-  cache:
-    key: "$CI_COMMIT_SHA"
-    policy: pull
-
   rules:
     - changes:
       - src

@@ -3,11 +3,6 @@ prepare:
   stage: setup
   image: node:13
 
-  cache:
-    key: "$CI_COMMIT_SHA"
-    paths:
-      - node_modules
-
   script:
     - yarn install
 

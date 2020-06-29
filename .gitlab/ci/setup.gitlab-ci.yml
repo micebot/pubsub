@@ -1,5 +1,7 @@
 prepare:
+
   stage: setup
+  image: node:13
 
   cache:
     key: "$CI_COMMIT_SHA"

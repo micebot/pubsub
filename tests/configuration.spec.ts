@@ -20,9 +20,7 @@ describe('configuration', () => {
       CHANNEL: lorem.word(),
     };
 
-    expect(() => configuration()).toThrowError(
-      'No username provided for client.',
-    );
+    expect(() => configuration()).toThrowError('No username provided for client.');
   });
 
   test('it should throw error when password is missing', () => {
@@ -31,9 +29,7 @@ describe('configuration', () => {
       CHANNEL: lorem.word(),
     };
 
-    expect(() => configuration()).toThrowError(
-      'No password provided for client.',
-    );
+    expect(() => configuration()).toThrowError('No password provided for client.');
   });
 
   test('it should throw error when channel is missing', () => {
@@ -42,8 +38,6 @@ describe('configuration', () => {
       USERNAME: lorem.word(),
     };
 
-    expect(() => configuration()).toThrowError(
-      'No channel provided for client.',
-    );
+    expect(() => configuration()).toThrowError('No channel provided for client.');
   });
 });

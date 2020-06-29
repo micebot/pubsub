@@ -6,3 +6,6 @@ node_modules
 
 # Dist
 build
+
+# Test / Coverage
+coverage

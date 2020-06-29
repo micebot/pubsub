@@ -1,0 +1,16 @@
+stages:
+  - setup
+  - lint
+  - testing
+  - deploy
+
+cache:
+  key: "$CI_COMMIT_SHA"
+  paths:
+    - node_modules
+
+include:
+  - local: .gitlab/ci/setup.gitlab-ci.yml
+  - local: .gitlab/ci/lint.gitlab-ci.yml
+  - local: .gitlab/ci/test.gitlab-ci.yml
+  - local: .gitlab/ci/deploy.gitlab-ci.yml

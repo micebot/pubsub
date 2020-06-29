@@ -5,7 +5,7 @@ deploy to heroku:
 
   script:
     - gem install dpl
-    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_SECRET_KEY --skip-cleanup=true
+    - dpl --provider=heroku --app=$TWITCH_HEROKU_APP --api-key=$HEROKU_SECRET_KEY --skip-cleanup=true
 
   dependencies:
     - unit tests

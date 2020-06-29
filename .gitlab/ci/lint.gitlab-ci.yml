@@ -1,0 +1,24 @@
+lint:
+
+  stage: lint
+  image: node:13
+
+  script:
+    - yarn lint
+
+  dependencies:
+    - prepare
+
+  rules:
+    - changes:
+      - src
+      - tests/**
+      - .gitlab-ci.yml
+      - .gitlab/**
+      - yarn.lock
+      - jest.config.js
+      - package.json
+      - tsconfig.json
+      - .eslintrc.js
+      - .prettierrc.js
+    - when: on_success

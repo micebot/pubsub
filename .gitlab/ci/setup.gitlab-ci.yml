@@ -1,0 +1,24 @@
+prepare:
+  stage: setup
+
+  cache:
+    key: "$CI_COMMIT_SHA"
+    paths:
+      - node_modules
+
+  script:
+    - yarn install
+
+  rules:
+    - changes:
+      - src
+      - tests/**
+      - .gitlab-ci.yml
+      - .gitlab/**
+      - yarn.lock
+      - jest.config.js
+      - package.json
+      - tsconfig.json
+      - .eslintrc.js
+      - .prettierrc.js
+    - when: always

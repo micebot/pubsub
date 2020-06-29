@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { Client, CommonUserstate } from 'tmi.js';
 import configuration from './configuration';
 import mentions from './extract';

@@ -1,0 +1,25 @@
+unit tests:
+
+  stage: testing
+  image: node:13
+
+  script:
+    - yarn test
+  coverage: /All\sfiles.*?\s+(\d+.\d+)/
+
+  dependencies:
+    - lint
+
+  rules:
+    - changes:
+      - src
+      - tests/**
+      - .gitlab-ci.yml
+      - .gitlab/**
+      - yarn.lock
+      - jest.config.js
+      - package.json
+      - tsconfig.json
+      - .eslintrc.js
+      - .prettierrc.js
+    - when: on_success

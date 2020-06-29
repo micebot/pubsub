@@ -1,6 +1,7 @@
 <h1 align='center'>
-    <img src='https://raw.githubusercontent.com/micebot/assets/master/images/logo-256x256.png'><br>
-    MiceBot :: Twitch
+    <img src='https://raw.githubusercontent.com/micebot/assets/master/images/logo-256x256.png' height="100">
+    <img src='https://raw.githubusercontent.com/micebot/assets/master/images/twitch-256x256.png' height="100"><br>
+    MiceBot
 </h1>
 <br>
 <div align='center'>
@@ -45,3 +46,6 @@ Este repositório contém o código responsável pela integração com a Twitch 
 [8]:https://gitlab.com/micebot/pubsub-ci/-/commits/master
 [9]:https://github.com/codigofalado/desafio333
 [10]:https://www.twitch.tv/codigofalado
+
+
+

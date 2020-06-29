@@ -12,15 +12,16 @@ build tsc:
     - unit tests
 
   rules:
-    - changes:
-      - src
-      - tests/**
-      - .gitlab-ci.yml
-      - .gitlab/**
-      - yarn.lock
-      - jest.config.js
-      - package.json
-      - tsconfig.json
-      - .eslintrc.js
-      - .prettierrc.js
-    - when: on_success
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      changes:
+        - src
+        - tests/**
+        - .gitlab-ci.yml
+        - .gitlab/**
+        - yarn.lock
+        - jest.config.js
+        - package.json
+        - tsconfig.json
+        - .eslintrc.js
+        - .prettierrc.js
+      when: on_success

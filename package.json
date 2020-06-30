@@ -30,9 +30,9 @@
     "twitter-text": "^3.1.0"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "build": "tsc -p .",
-    "run:app": "node build/index.js",
-    "start": "yarn build && yarn run:app"
+    "lint": "eslint src/**/*.ts tests/**/*.ts",
+    "start": "node build/index.js"
   }
 }

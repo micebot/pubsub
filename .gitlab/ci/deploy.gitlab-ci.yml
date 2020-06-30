@@ -1,0 +1,26 @@
+deploy to heroku:
+
+  stage: deploy
+  image: ruby:2.7
+
+  script:
+    - gem install dpl
+    - dpl --provider=heroku --app=$TWITCH_HEROKU_APP --api-key=$HEROKU_SECRET_KEY --skip-cleanup=true
+
+  dependencies:
+    - unit tests
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      changes:
+        - src
+        - tests/**
+        - .gitlab-ci.yml
+        - .gitlab/**
+        - yarn.lock
+        - jest.config.js
+        - package.json
+        - tsconfig.json
+        - .eslintrc.js
+        - .prettierrc.js
+      when: on_success

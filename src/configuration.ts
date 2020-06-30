@@ -8,6 +8,8 @@ type Configuration = {
  * Valida que as variáveis de ambiente estão
  */
 function validateConfiguration() {
+  // eslint-disable-next-line global-require
+  require('dotenv').config();
   if (!process.env.USERNAME) throw Error('No username provided for client.');
   if (!process.env.PASSWORD) throw Error('No password provided for client.');
   if (!process.env.CHANNEL) throw Error('No channel provided for client.');

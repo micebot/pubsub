@@ -16,6 +16,7 @@ describe('configuration', () => {
 
   test('it should throw error when username is missing', () => {
     process.env = {
+      USERNAME: undefined,
       PASSWORD: lorem.word(),
       CHANNEL: lorem.word(),
     };
@@ -26,6 +27,7 @@ describe('configuration', () => {
   test('it should throw error when password is missing', () => {
     process.env = {
       USERNAME: lorem.word(),
+      PASSWORD: undefined,
       CHANNEL: lorem.word(),
     };
 
@@ -36,6 +38,7 @@ describe('configuration', () => {
     process.env = {
       PASSWORD: lorem.word(),
       USERNAME: lorem.word(),
+      CHANNEL: undefined,
     };
 
     expect(() => configuration()).toThrowError('No channel provided for client.');

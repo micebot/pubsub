@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { Client, CommonUserstate } from 'tmi.js';
 import giveBook from './commands';
 import configuration from './configuration';
@@ -20,7 +21,7 @@ const client = Client({
 client.on('message', (channel: string, state: CommonUserstate, message: string, self: boolean) => {
   if (self) return;
 
-  if (message.includes('!givebook') && state.mod)
+  if (message.includes('!givebook') && (state.mod || state.badges?.broadcaster))
     giveBook({ channel, client, message, reply: state['display-name'] });
 
   // TODO: esperar a verificação do bot.

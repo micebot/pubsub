@@ -13,7 +13,7 @@ type GiveBookCommand = {
 function giveBook(command: GiveBookCommand) {
   const users = mentions(command.message);
 
-  if (!users) return;
+  if (users.length === 0) return;
 
   const usersToMentions = users.map((user) => `@${user}`).join(', ');
   const plural = transformPlural(users);

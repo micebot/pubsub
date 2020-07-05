@@ -1,33 +1,63 @@
-// eslint-disable-next-line no-unused-vars
-import { Client, CommonUserstate } from 'tmi.js';
+import { config } from 'dotenv';
+import { ChatUserstate, Client } from 'tmi.js';
+import API from './api';
 import giveBook from './commands';
-import configuration from './configuration';
 
-const config = configuration();
+async function run() {
+  config();
 
-const client = Client({
-  options: { debug: true },
-  connection: {
-    reconnect: true,
-    secure: true,
-  },
-  identity: {
-    username: config.username,
-    password: config.password,
-  },
-  channels: config.channels,
-});
+  const api = new API();
+  await api.authentication();
 
-client.on('message', (channel: string, state: CommonUserstate, message: string, self: boolean) => {
-  if (self) return;
+  const client = Client({
+    options: { debug: process.env.NODE_ENV !== 'production' },
+    identity: {
+      username: process.env.USERNAME,
+      password: process.env.PASSWORD,
+    },
+    channels: [process.env.CHANNEL || ''],
+  });
 
-  if (message.includes('!givebook') && (state.mod || state.badges?.broadcaster))
-    giveBook({ channel, client, message, reply: state['display-name'] });
+  client.on(
+    'message',
+    (
+      channel: string,
+      userstate: ChatUserstate,
+      message: string,
+      self: boolean,
+    ) => {
+      if (self) return;
 
-  // TODO: esperar a verificação do bot.
-  // users.map(async (user: string) => {
-  //   await client.whisper(user, 'Eu vou te dar um book!');
-  // });
-});
+      if (
+        message.includes('!book') &&
+        (userstate.mod || userstate.badges?.broadcaster)
+      )
+        giveBook(message, channel, client, userstate, api);
+    },
+  );
 
-client.connect();
+  client.connect();
+}
+
+run();
+
+// async function test() {
+//   const api = new API();
+//   await api.authentication();
+
+//   const products = await api.getProducts(10);
+//   const orders: Array<OrderCreation> = [
+//     {
+//       mod_display_name: 'rn4n',
+//       owner_display_name: 'milaxd',
+//       mod_id: 'dsdjkasjdkjaskldj',
+//     },
+//   ];
+
+//   orders.map(async (order, index) => {
+//     const createdOrder = await api.getOrder(products[index], order);
+//     console.log(`Pedido criado: ${createdOrder}`);
+//   });
+// }
+
+// test();

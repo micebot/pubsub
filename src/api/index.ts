@@ -23,7 +23,7 @@ export default class API {
     );
 
     if (res.status === 200) {
-      const token = res.data?.['access_token'];
+      const token = res.data.access_token;
       if (!token)
         throw new Error(`Fail to get access token! Response: ${res.data}.`);
       else {

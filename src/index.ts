@@ -1,13 +1,12 @@
 import { config } from 'dotenv';
 import { ChatUserstate, Client } from 'tmi.js';
-import API from './api';
+import { authentication } from './api';
 import giveBook from './commands';
 
 async function run() {
   config();
 
-  const api = new API();
-  await api.authentication();
+  await authentication();
 
   const client = Client({
     options: { debug: process.env.NODE_ENV !== 'production' },
@@ -32,7 +31,7 @@ async function run() {
         message.includes('!book') &&
         (userstate.mod || userstate.badges?.broadcaster)
       )
-        giveBook(message, channel, client, userstate, api);
+        giveBook(message, channel, client, userstate);
     },
   );
 

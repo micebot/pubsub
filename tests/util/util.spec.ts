@@ -1,5 +1,6 @@
 import { lorem, name } from 'faker';
-import mentions, {
+import {
+  mentions,
   removeAdditionalSpaces,
   transformPlural,
 } from '../../src/util';

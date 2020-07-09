@@ -24,7 +24,7 @@ export function removeAdditionalSpaces(text: string): string {
  *
  * @returns a list containing the mentions, without duplicates.
  */
-export default function mentions(text: string): Array<string> {
+export function mentions(text: string): Array<string> {
   const occurrences = extractMentions(text);
   return [...new Set(occurrences)];
 }

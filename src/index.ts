@@ -3,8 +3,10 @@ import { ChatUserstate, Client } from 'tmi.js';
 import { authentication } from './api';
 import giveBook from './commands';
 
+
+config() // TODO: ver porque o .env não está sendo carregado em process.env.*
+
 async function run() {
-  config();
 
   await authentication();
 
@@ -39,24 +41,3 @@ async function run() {
 }
 
 run();
-
-// async function test() {
-//   const api = new API();
-//   await api.authentication();
-
-//   const products = await api.getProducts(10);
-//   const orders: Array<OrderCreation> = [
-//     {
-//       mod_display_name: 'rn4n',
-//       owner_display_name: 'milaxd',
-//       mod_id: 'dsdjkasjdkjaskldj',
-//     },
-//   ];
-
-//   orders.map(async (order, index) => {
-//     const createdOrder = await api.getOrder(products[index], order);
-//     console.log(`Pedido criado: ${createdOrder}`);
-//   });
-// }
-
-// test();

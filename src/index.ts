@@ -3,11 +3,9 @@ import { ChatUserstate, Client } from 'tmi.js';
 import { authentication } from './api';
 import giveBook from './commands';
 
-
-config() // TODO: ver porque o .env não está sendo carregado em process.env.*
+config(); // TODO: ver porque o .env não está sendo carregado em process.env.*
 
 async function run() {
-
   await authentication();
 
   const client = Client({
@@ -23,7 +21,7 @@ async function run() {
     'message',
     (
       channel: string,
-      userstate: ChatUserstate,
+      userState: ChatUserstate,
       message: string,
       self: boolean,
     ) => {
@@ -31,9 +29,9 @@ async function run() {
 
       if (
         message.includes('!book') &&
-        (userstate.mod || userstate.badges?.broadcaster)
+        (userState.mod || userState.badges?.broadcaster)
       )
-        giveBook(message, channel, client, userstate);
+        giveBook(message, channel, client, userState);
     },
   );
 

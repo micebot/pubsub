@@ -5,3 +5,5 @@ end_of_line = lf
 
 [*.{ts,js,json}]
 charset = utf-8
+indent_size = 2
+indent_style = space

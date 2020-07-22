@@ -6,6 +6,7 @@
     "node": "13.x"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/dotenv": "^8.2.0",
     "@types/faker": "^4.1.12",
     "@types/jest": "^26.0.3",
@@ -25,7 +26,9 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "dotenv": "^8.2.0",
+    "querystring": "^0.2.0",
     "tmi.js": "^1.5.0",
     "twitter-text": "^3.1.0"
   },

@@ -1,7 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { Client, CommonUserstate } from 'tmi.js';
 import giveBook from './commands';
-import configuration from './configuration';
 
 const config = configuration();
 

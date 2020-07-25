@@ -1,15 +1,18 @@
+import { config } from 'dotenv';
 import querystring from 'querystring';
 import Order from '../model/order';
 import OrderCreation from '../model/order-creation';
 import Product from '../model/product';
 import client from './client';
 
+config();
+
 export async function authentication(): Promise<void> {
   const res = await client.post(
     '/auth/',
     querystring.stringify({
-      username: process.env.PS_USER,
-      password: process.env.PS_PASS,
+      username: process.env.PUBSUB_USER,
+      password: process.env.PUBSUB_PASS,
     }),
   );
 

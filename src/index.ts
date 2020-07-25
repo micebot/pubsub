@@ -3,7 +3,7 @@ import { ChatUserstate, Client } from 'tmi.js';
 import { authentication } from './api';
 import giveBook from './commands';
 
-config(); // TODO: ver porque o .env não está sendo carregado em process.env.*
+config();
 
 async function run() {
   await authentication();
@@ -37,5 +37,4 @@ async function run() {
 
   client.connect();
 }
-
 run();

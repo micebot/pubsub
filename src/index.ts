@@ -1,32 +1,41 @@
-// eslint-disable-next-line no-unused-vars
-import { Client, CommonUserstate } from 'tmi.js';
+import { config } from 'dotenv';
+import { ChatUserstate, Client } from 'tmi.js';
+import { authentication } from './api';
 import giveBook from './commands';
 
-const config = configuration();
+config(); // TODO: ver porque o .env não está sendo carregado em process.env.*
 
-const client = Client({
-  options: { debug: true },
-  connection: {
-    reconnect: true,
-    secure: true,
-  },
-  identity: {
-    username: config.username,
-    password: config.password,
-  },
-  channels: config.channels,
-});
+async function run() {
+  await authentication();
 
-client.on('message', (channel: string, state: CommonUserstate, message: string, self: boolean) => {
-  if (self) return;
+  const client = Client({
+    options: { debug: process.env.NODE_ENV !== 'production' },
+    identity: {
+      username: process.env.USERNAME,
+      password: process.env.PASSWORD,
+    },
+    channels: [process.env.CHANNEL || ''],
+  });
 
-  if (message.includes('!givebook') && (state.mod || state.badges?.broadcaster))
-    giveBook({ channel, client, message, reply: state['display-name'] });
+  client.on(
+    'message',
+    (
+      channel: string,
+      userState: ChatUserstate,
+      message: string,
+      self: boolean,
+    ) => {
+      if (self) return;
 
-  // TODO: esperar a verificação do bot.
-  // users.map(async (user: string) => {
-  //   await client.whisper(user, 'Eu vou te dar um book!');
-  // });
-});
+      if (
+        message.includes('!book') &&
+        (userState.mod || userState.badges?.broadcaster)
+      )
+        giveBook(message, channel, client, userState);
+    },
+  );
 
-client.connect();
+  client.connect();
+}
+
+run();

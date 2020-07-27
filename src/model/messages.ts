@@ -19,8 +19,25 @@ export function giveBookWhisperMessage(user: string, code: string): string {
   );
 }
 
-export function helpWhisperMessage() {
+export function helpWhisperMessage(): string {
   return removeAdditionalSpaces(`Qualquer dúvida, entre em contato
   conosco pelo Discord ou chame um moderador por sussurro aqui na Twitch,
   ok?! - https://discord.com/invite/3y4X9pm 🐭`);
+}
+
+export function noPruductAvailableMessage(mention: string): string {
+  return removeAdditionalSpaces(`Ei ${mention}, não tenho nenhum código
+  disponível para entregar ao vencedor. Poderia me enviar no Discord?`);
+}
+
+export function unavailableProductMessage(
+  mention: string,
+  actual: number,
+  expected: number,
+): string {
+  return removeAdditionalSpaces(`Ei ${mention}, infelizmente não posso
+  realizar a entrega da premiação pois a quantidade de itens disponíveis é
+  inferior ao número de usuário para premiar. Eu tenho ${actual} itens disponíveis
+  e você me pediu para enviar o código para ${expected} pessoas. Faça o cadastro de
+  mais códigos pelo Discord e utilize o comando novamente no chat.`);
 }

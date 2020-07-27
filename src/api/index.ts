@@ -1,8 +1,10 @@
 import { config } from 'dotenv';
 import querystring from 'querystring';
-import Order from '../model/order';
-import OrderCreation from '../model/order-creation';
-import Product from '../model/product';
+import OrderCreation, {
+  Order,
+  Product,
+  ProductResponse,
+} from '../model/models';
 import client from './client';
 
 config();
@@ -38,14 +40,20 @@ export async function heartbeat(): Promise<boolean> {
   return res.status === 200 && res.data.valid;
 }
 
-export async function getProducts(quantity: number): Promise<Array<Product>> {
-  const res = await client.get(`/products?limit=${quantity}&taken=false`);
+export async function getProducts(
+  quantity: number,
+): Promise<ProductResponse | undefined> {
+  const res = await client.get(
+    `/products?limit=${quantity}&taken=false&desc=true`,
+  );
+
+  console.log(`Resposta: ${JSON.stringify(res.data)}`);
 
   if (res.status === 200) {
-    return res.data as Array<Product>;
+    return res.data as ProductResponse;
   }
 
-  return [];
+  return undefined;
 }
 
 export async function getOrder(
@@ -66,6 +74,7 @@ export async function getOrder(
       },
     },
   );
+
   if (res.status === 201) {
     return {
       modId: res.data.mod_id,
@@ -76,9 +85,9 @@ export async function getOrder(
       product: {
         code: res.data.product.code,
         summary: res.data.product.summary,
-        taken: res.data.product.taken,
+        created_at: res.data.product.create_at,
+        updated_at: res.data.product.updated_at,
         uuid: res.data.product.uuid,
-        takenAt: res.data.product.taken_at,
       },
     };
   }

@@ -4,6 +4,8 @@ import {
   giveBookChatMessage,
   giveBookWhisperMessage,
   helpWhisperMessage,
+  noPruductAvailableMessage,
+  unavailableProductMessage,
 } from './model/messages';
 import { mentions } from './util';
 
@@ -25,10 +27,33 @@ async function giveBook(
 
   const products = await getProducts(users.length);
 
+  // TODO: dar feedback para o moderador em caso de falha para obter os produtos.
+  if (products === undefined || products.products === undefined) return;
+
+  if (products.total.available === 0) {
+    client.whisper(
+      state['display-name'],
+      noPruductAvailableMessage(state['display-name']),
+    );
+    return;
+  }
+
+  if (products.total.available < users.length) {
+    client.whisper(
+      state['display-name'],
+      unavailableProductMessage(
+        state['display-name'],
+        products.total.available,
+        users.length,
+      ),
+    );
+    return;
+  }
+
   // eslint-disable-next-line no-restricted-syntax
   for (const [index, user] of users.entries()) {
     // eslint-disable-next-line no-await-in-loop
-    const order = await getOrder(products[index], {
+    const order = await getOrder(products.products[index], {
       modDisplayName: state['display-name'],
       modId: state.id,
       ownerDisplayName: user,

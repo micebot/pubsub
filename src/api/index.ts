@@ -47,8 +47,6 @@ export async function getProducts(
     `/products?limit=${quantity}&taken=false&desc=true`,
   );
 
-  console.log(`Resposta: ${JSON.stringify(res.data)}`);
-
   if (res.status === 200) {
     return res.data as ProductResponse;
   }

@@ -73,7 +73,7 @@ yarn start
 
 | Branch | Pipeline | Coverage |
 | ------ | ----- | ----- |
-| **Development** | [![pipeline status][1]][2] | ![coverage report][3]] |
+| **Development** | [![pipeline status][1]][2] | ![coverage report][3] |
 | **Master** | [![pipeline status][5]][6] | ![coverage report][7] |
 
 [1]:https://gitlab.com/micebot/pubsub-ci/badges/development/pipeline.svg

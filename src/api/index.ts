@@ -36,7 +36,7 @@ export async function authentication(): Promise<void> {
 }
 
 export async function heartbeat(): Promise<boolean> {
-  const res = await client.get('/hb');
+  const res = await client.get('/hb/');
   return res.status === 200 && res.data.valid;
 }
 

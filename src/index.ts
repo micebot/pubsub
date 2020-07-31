@@ -14,7 +14,7 @@ async function run() {
       username: process.env.USERNAME,
       password: process.env.PASSWORD,
     },
-    channels: [process.env.CHANNEL || ''],
+    channels: process.env.CHANNEL?.split(',') || [],
   });
 
   client.on(

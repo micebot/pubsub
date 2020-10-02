@@ -1,21 +1,20 @@
 prepare:
-
   stage: setup
-  image: node:13
+  image: node:14
 
   script:
     - yarn install
 
   rules:
     - changes:
-      - src
-      - tests/**
-      - .gitlab-ci.yml
-      - .gitlab/**
-      - yarn.lock
-      - jest.config.js
-      - package.json
-      - tsconfig.json
-      - .eslintrc.js
-      - .prettierrc.js
+        - src
+        - tests/**
+        - .gitlab-ci.yml
+        - .gitlab/**
+        - yarn.lock
+        - jest.config.js
+        - package.json
+        - tsconfig.json
+        - .eslintrc.js
+        - .prettierrc.js
     - when: always

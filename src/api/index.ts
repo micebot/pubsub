@@ -43,6 +43,10 @@ export async function heartbeat(): Promise<boolean> {
 export async function getProducts(
   quantity: number,
 ): Promise<ProductResponse | undefined> {
+  if (!(await heartbeat())) {
+    await authentication();
+  }
+
   const res = await client.get(
     `/products?limit=${quantity}&taken=false&desc=true`,
   );
@@ -58,6 +62,10 @@ export async function getOrder(
   product: Product,
   creation: OrderCreation,
 ): Promise<Order | undefined> {
+  if (!(await heartbeat())) {
+    await authentication();
+  }
+
   const res = await client.post(
     `/orders/${product.uuid}`,
     {

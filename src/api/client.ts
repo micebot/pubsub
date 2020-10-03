@@ -3,6 +3,8 @@ import { config } from 'dotenv';
 
 config();
 
-export default Axios.create({
-  baseURL: process.env.API_ENDPOINT,
-});
+export default () => {
+  return Axios.create({
+    baseURL: process.env.API_ENDPOINT,
+  });
+};

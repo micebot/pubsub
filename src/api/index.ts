@@ -1,3 +1,4 @@
+import { AxiosInstance } from 'axios';
 import { config } from 'dotenv';
 import querystring from 'querystring';
 import OrderCreation, {
@@ -5,11 +6,15 @@ import OrderCreation, {
   Product,
   ProductResponse,
 } from '../model/models';
-import client from './client';
+import AxiosClient from './client';
 
 config();
 
+let client: AxiosInstance;
+
 export async function authentication(): Promise<void> {
+  client = AxiosClient();
+
   const res = await client.post(
     '/auth/',
     querystring.stringify({
@@ -36,15 +41,23 @@ export async function authentication(): Promise<void> {
 }
 
 export async function heartbeat(): Promise<boolean> {
-  const res = await client.get('/hb/');
-  return res.status === 200 && res.data.valid;
+  try {
+    const res = await client.get('/hb/');
+    return res.status === 200 && res.data?.valid;
+  } catch (err) {
+    return false;
+  }
 }
 
 export async function getProducts(
   quantity: number,
 ): Promise<ProductResponse | undefined> {
+  if (!(await heartbeat())) {
+    await authentication();
+  }
+
   const res = await client.get(
-    `/products?limit=${quantity}&taken=false&desc=true`,
+    `/products/?limit=${quantity}&taken=false&desc=true`,
   );
 
   if (res.status === 200) {
@@ -58,6 +71,10 @@ export async function getOrder(
   product: Product,
   creation: OrderCreation,
 ): Promise<Order | undefined> {
+  if (!(await heartbeat())) {
+    await authentication();
+  }
+
   const res = await client.post(
     `/orders/${product.uuid}`,
     {

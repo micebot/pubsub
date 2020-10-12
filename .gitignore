@@ -2,7 +2,10 @@
 node_modules
 
 # Editors/IDEs
-.vscode
+.vscode/*
+
+# Settings for VScode
+!.vscode/settings.json
 
 # Dist
 build

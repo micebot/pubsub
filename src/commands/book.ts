@@ -1,27 +1,27 @@
 import { ChatUserstate, Client } from 'tmi.js';
-import { authentication, getOrder, getProducts, heartbeat } from './api';
+import { authentication, getOrder, getProducts, heartbeat } from '../api';
 import {
   giveBookChatMessage,
   giveBookWhisperMessage,
   helpWhisperMessage,
   noPruductAvailableMessage,
   unavailableProductMessage,
-} from './model/messages';
-import { mentions } from './util';
+} from '../model/messages';
+import { mentions } from '../util';
 
-async function giveBook(
-  message: string,
-  channel: string,
+export default async (
   client: Client,
-  state: ChatUserstate,
-) {
+  target: string,
+  tags: ChatUserstate,
+  message: string,
+) => {
   const users = mentions(message);
 
   if (users.length === 0) return;
 
-  if (state.id === undefined || state['display-name'] === undefined) return;
+  if (tags.id === undefined || tags['display-name'] === undefined) return;
 
-  client.say(channel, giveBookChatMessage(state['display-name'], users));
+  client.say(target, giveBookChatMessage(tags['display-name'], users));
 
   if (!(await heartbeat())) await authentication();
 
@@ -32,17 +32,17 @@ async function giveBook(
 
   if (products.total.available === 0) {
     client.whisper(
-      state['display-name'],
-      noPruductAvailableMessage(state['display-name']),
+      tags['display-name'],
+      noPruductAvailableMessage(tags['display-name']),
     );
     return;
   }
 
   if (products.total.available < users.length) {
     client.whisper(
-      state['display-name'],
+      tags['display-name'],
       unavailableProductMessage(
-        state['display-name'],
+        tags['display-name'],
         products.total.available,
         users.length,
       ),
@@ -54,8 +54,8 @@ async function giveBook(
   for (const [index, user] of users.entries()) {
     // eslint-disable-next-line no-await-in-loop
     const order = await getOrder(products.products[index], {
-      modDisplayName: state['display-name'],
-      modId: state.id,
+      modDisplayName: tags['display-name'],
+      modId: tags.id,
       ownerDisplayName: user,
     });
 
@@ -65,6 +65,4 @@ async function giveBook(
     client.whisper(user, giveBookWhisperMessage(user, order.product.code));
     client.whisper(user, helpWhisperMessage());
   }
-}
-
-export default giveBook;
+};

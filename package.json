@@ -99,7 +99,7 @@
   "scripts": {
     "test": "jest --coverage",
     "build": "tsc -p .",
-    "lint": "eslint src/**/*.ts tests/**/*.ts",
+    "lint": "eslint src/**/*.ts",
     "start": "node build/index.js",
     "dev": "yarn build && yarn start"
   }

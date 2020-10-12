@@ -1,5 +1,4 @@
 deploy to heroku:
-
   stage: deploy
   image: ruby:2.7
 
@@ -7,8 +6,8 @@ deploy to heroku:
     - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_PUBSUB_APP --api-key=$HEROKU_PUBSUB_KEY --skip-cleanup=true
 
-  dependencies:
-    - unit tests
+  # dependencies:
+  #   - unit tests
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'

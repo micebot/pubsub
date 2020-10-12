@@ -9,7 +9,16 @@ import { authentication } from './api';
 async function run() {
   config();
 
-  await authentication();
+  if (!(await authentication())) {
+    // eslint-disable-next-line no-console
+    console.error('Fail to establish connection to API. Killing the mice!');
+    return;
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(
+    'Established connection to Micebot API, connection to Twitch IRC...',
+  );
 
   const client = Client({
     options: { debug: process.env.NODE_ENV !== 'production' },
@@ -35,9 +44,14 @@ async function run() {
           message: string,
           self: boolean,
         ) => {
+          // Ignora se for mensagem enviada por um bot.
           if (self) return;
-          const module = await import(`./commands/${file}`);
-          module.default(client, target, tags, message);
+
+          if (tags.badges?.broadcaster || tags.mod) {
+            // Carrega o comando somente para o broadcaster e moderadores.
+            const module = await import(`./commands/${file}`);
+            await module.default(client, target, tags, message);
+          }
         },
       );
     });

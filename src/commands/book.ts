@@ -1,48 +1,62 @@
+/* eslint-disable no-await-in-loop */
 import { ChatUserstate, Client } from 'tmi.js';
 import { authentication, getOrder, getProducts, heartbeat } from '../api';
+import failedToFetchProducts from '../model/messages/api-errors';
 import {
-  giveBookChatMessage,
-  giveBookWhisperMessage,
-  helpWhisperMessage,
-  noPruductAvailableMessage,
-  unavailableProductMessage,
-} from '../model/messages';
-import { mentions } from '../util';
+  bookCommandUserWhisper,
+  bookCommandNotAvailableModeratorWhisper,
+  bookCommandNumberOfProductsIsLessThanRequiredWhisper,
+  bookCommandFailedToCreateAOrderWhisper,
+} from '../model/messages/book';
+
+import helpWhisperMessage from '../model/messages/generic';
+
+import { mentions, removeBotUsernameFromUsers } from '../util';
 
 export default async (
   client: Client,
-  target: string,
+  _: string,
   tags: ChatUserstate,
   message: string,
 ) => {
-  const users = mentions(message);
+  // Se não for o comando correto.
+  if (!message.startsWith('!book')) return;
 
-  if (users.length === 0) return;
-
+  // Ignora se não conseguir obter o ID e o nome de usuário de quem usou o comando.
   if (tags.id === undefined || tags['display-name'] === undefined) return;
 
-  client.say(target, giveBookChatMessage(tags['display-name'], users));
+  const users = removeBotUsernameFromUsers(mentions(message));
+
+  // Nenhum usuário mencionado.
+  if (users.length === 0) return;
+
+  const moderatorDisplayName = tags['display-name'];
 
   if (!(await heartbeat())) await authentication();
 
   const products = await getProducts(users.length);
 
-  // TODO: dar feedback para o moderador em caso de falha para obter os produtos.
-  if (products === undefined || products.products === undefined) return;
+  // Se ocorrer falha na conexão com a API para obter os produtos.
+  if (products === undefined || products.products === undefined) {
+    await client.whisper(moderatorDisplayName, failedToFetchProducts());
+    return;
+  }
 
+  // Se o número de produtos disponíveis for zero.
   if (products.total.available === 0) {
-    client.whisper(
-      tags['display-name'],
-      noPruductAvailableMessage(tags['display-name']),
+    await client.whisper(
+      moderatorDisplayName,
+      bookCommandNotAvailableModeratorWhisper(moderatorDisplayName),
     );
     return;
   }
 
+  // Se o número de produtos disponíveis for menor que o solicitado.
   if (products.total.available < users.length) {
-    client.whisper(
-      tags['display-name'],
-      unavailableProductMessage(
-        tags['display-name'],
+    await client.whisper(
+      moderatorDisplayName,
+      bookCommandNumberOfProductsIsLessThanRequiredWhisper(
+        moderatorDisplayName,
         products.total.available,
         users.length,
       ),
@@ -52,17 +66,24 @@ export default async (
 
   // eslint-disable-next-line no-restricted-syntax
   for (const [index, user] of users.entries()) {
-    // eslint-disable-next-line no-await-in-loop
     const order = await getOrder(products.products[index], {
-      modDisplayName: tags['display-name'],
+      modDisplayName: moderatorDisplayName,
       modId: tags.id,
       ownerDisplayName: user,
     });
 
-    // TODO: tratamento caso falhe a criação de pedido.
-    if (order === undefined) return;
-
-    client.whisper(user, giveBookWhisperMessage(user, order.product.code));
-    client.whisper(user, helpWhisperMessage());
+    // Se houver problema na criação do pedido, o moderador será informado.
+    if (order === undefined) {
+      await client.whisper(
+        moderatorDisplayName,
+        bookCommandFailedToCreateAOrderWhisper(user),
+      );
+    } else {
+      await client.whisper(
+        user,
+        bookCommandUserWhisper(user, order.product.code),
+      );
+      await client.whisper(user, helpWhisperMessage());
+    }
   }
 };

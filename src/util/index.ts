@@ -28,3 +28,11 @@ export function mentions(text: string): Array<string> {
   const occurrences = extractMentions(text);
   return [...new Set(occurrences)];
 }
+
+/**
+ * Remove o nome de usuário do bot da lista de usuários.
+ * @param users lista de usuários.
+ */
+export function removeBotUsernameFromUsers(users: string[]): string[] {
+  return users.filter((username) => username !== 'botmice');
+}
